@@ -178,6 +178,17 @@ export const ensureUsersExistInDb = async (userIds, executor = pool) => {
     return normalizedUserIds;
 };
 
+export const countUserAssignedTasksInDb = async (userId, executor = pool) => {
+    const [rows] = await executor.query(
+        `SELECT COUNT(DISTINCT task_id) AS totalAssignedTasks
+         FROM task_users
+         WHERE user_id = ?`,
+        [userId]
+    );
+
+    return Number(rows[0]?.totalAssignedTasks || 0);
+};
+
 export const withTransaction = async (callback) => {
     const connection = await pool.getConnection();
 

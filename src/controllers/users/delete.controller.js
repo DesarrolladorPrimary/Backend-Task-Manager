@@ -1,4 +1,4 @@
-import { TaskModel, UserModel } from '../../models/index.models.js';
+import { UserModel } from '../../models/index.models.js';
 import { sanitizeUser } from '../../models/users/helpers.js';
 import { sendErrorResponse } from '../utils.js';
 export const deleteUser = async (req, res) => {
@@ -6,8 +6,6 @@ export const deleteUser = async (req, res) => {
         const { userId } = req.params;
 
         const deletedUser = await UserModel.delete(userId);
-        // Quita al usuario de las tareas donde estaba asignado.
-        await TaskModel.removeUserAssignments(userId);
 
         res.status(200).json({
             success: true,
