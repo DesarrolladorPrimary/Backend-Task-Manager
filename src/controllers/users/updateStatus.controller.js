@@ -1,4 +1,4 @@
-import { TaskModel, UserModel } from '../../models/index.models.js';
+import { UserModel } from '../../models/index.models.js';
 import { sanitizeUser } from '../../models/users/helpers.js';
 import { sendErrorResponse } from '../utils.js';
 export const updateStatus = async (req, res) => {
@@ -14,11 +14,6 @@ export const updateStatus = async (req, res) => {
         }
 
         const updatedUser = await UserModel.updateStatus(userId, status);
-
-        if (updatedUser.status === 'eliminado') {
-            // Si el usuario queda eliminado, se saca de las tareas asignadas.
-            await TaskModel.removeUserAssignments(userId);
-        }
 
         res.status(200).json({
             success: true,
